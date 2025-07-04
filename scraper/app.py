@@ -7,11 +7,15 @@ app = FastAPI()
 
 @app.post("/fetch_oab/", response_model=Response)
 async def fetch_oab_data(request: Request):
-    if (request.uf != request.uf.upper()):
+    if (request.name == ""):
+        raise HTTPException(status_code=400, detail=f"Campo de nome não pode ser vazio.")
+
+    if (request.uf == ""):
+        raise HTTPException(status_code=400, detail=f"Campo de uf não pode ser vazio.")
+    elif (request.uf != request.uf.upper()):
         request.uf = request.uf.upper()
-    
     if (request.uf not in valid_ufs):
-        raise HTTPException(status_code=400, detail=f"'uf' inserida não é valida: {request.uf}")
+        raise HTTPException(status_code=400, detail=f"'uf' inserida não é valida: {request.uf}.")
     try:
         result = fetch_data(request.name, request.uf)
         return result
