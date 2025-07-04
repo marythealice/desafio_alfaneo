@@ -12,8 +12,9 @@ import os
 
 
 def fetch_data(full_name: str, state: str):
-    
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
     driver.get("https://cna.oab.org.br")
     name_input = driver.find_element(By.ID, "txtName")
     name_input.clear()
@@ -80,5 +81,6 @@ def fetch_data(full_name: str, state: str):
 
     data_response = {"oab": info_array[3], "nome": info_array[1], "uf":info_array[4], "categoria": info_array[2], "situacao": info_array[0]}
     print(data_response)
+    driver.quit()
     return data_response
 
