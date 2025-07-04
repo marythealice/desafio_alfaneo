@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from web_scraper import fetch_data
-from models import Request, Response, valid_ufs
+from scraper.web_scraper import fetch_data
+from scraper.models import Request, Response, valid_ufs
 from requests.exceptions import HTTPError
 
 app = FastAPI()
