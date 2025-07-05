@@ -11,16 +11,18 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
-def get_chrome_driver(url: str):
+def get_oab_chrome_driver(url: str):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
     driver = webdriver.Chrome(options=options)
     driver.get(url)
-    return driver
-
 
 def fetch_data(full_name: str, state: str):
-    driver = get_chrome_driver("https://cna.oab.org.br")
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
+    driver.get("https://cna.oab.org.br")
+
     name_input = driver.find_element(By.ID, "txtName")
     name_input.clear()
     name_input.send_keys(full_name)
@@ -35,7 +37,7 @@ def fetch_data(full_name: str, state: str):
 
     try:
         element_present = EC.presence_of_element_located((By.XPATH, "//html/body/div[2]/div[1]/div[2]/div[2]/div[1]"))
-        WebDriverWait(driver, 5).until(element_present)
+        WebDriverWait(driver, 10).until(element_present)
         print("Page is ready!")
     except TimeoutException:
         print("entrou execao")
@@ -46,7 +48,7 @@ def fetch_data(full_name: str, state: str):
 
     try:
         element_present = EC.presence_of_element_located((By.ID, "imgDetail"))
-        WebDriverWait(driver, 5).until(element_present)
+        WebDriverWait(driver, 10).until(element_present)
         print("Page is ready!")
     except TimeoutError:
         print("Loading took time!")
