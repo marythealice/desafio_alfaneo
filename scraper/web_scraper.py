@@ -1,26 +1,24 @@
 import os
-
 import pytesseract
 import requests
 from bs4 import BeautifulSoup
 from PIL import Image
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
-def get_oab_chrome_driver(url: str):
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options=options)
-    driver.get(url)
 
 def fetch_data(full_name: str, state: str):
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options=options)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new")
+    driver = webdriver.Remote(
+        command_executor=os.environ["SELENIUM_REMOTE_URL"],
+        options=chrome_options
+    )
     driver.get("https://cna.oab.org.br")
 
     name_input = driver.find_element(By.ID, "txtName")
