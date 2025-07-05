@@ -18,6 +18,10 @@ async def fetch_oab_data(request: Request):
         raise HTTPException(status_code=400, detail=f"'uf' inserida não é valida: {request.uf}.")
     try:
         result = fetch_data(request.name, request.uf)
+        if (result is None):
+            raise HTTPException(status_code=404, detail="Advogado não encontrado.")
+
         return result
+    
     except HTTPError as e:
         print(f"Houve um erro: {e}")
